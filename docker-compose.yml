@@ -1,0 +1,75 @@
+version: "3.7"
+
+services: 
+    db:
+        container_name: mysql_comp_dev_js_stack
+        image: mysql:8.0.19
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            js_stack_net:
+        ports:
+            - 3307:3306
+        environment:
+            - MYSQL_DATABASE=ctodo
+            - MYSQL_ROOT_PASSWORD=example
+        volumes:
+            - ./server/db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+            - js_stack_db:/var/lib/mysql/
+    api:
+        container_name: node_comp_dev_js_stack
+        build:
+            context: ./server
+            dockerfile: Dockerfile.dev
+        networks: 
+            - js_stack_net
+            - js_stack_com_net
+        environment: 
+            PORT: 8080
+            MYSQL_HOST: db
+            MYSQL_USER: test
+            MYSQL_PASSWORD: example
+            MYSQL_DB: ctodo
+            MYSQL_PORT: 3306
+        ports:
+            - target: 8080
+              published: 8080
+              protocol: tcp
+              mode: host
+        volumes:
+            - ./server:/app
+            - js_stack_api:/app/node_modules
+        working_dir: /app
+        stdin_open: true
+        tty: true
+        restart: always
+        depends_on: 
+            - db
+        command: npm run dev
+    client:
+        container_name: react_comp_dev_js_stack
+        build:
+            context: ./client
+            dockerfile: Dockerfile.dev
+        networks: 
+            - js_stack_com_net
+        environment: 
+            NODE_ENV: development
+        ports:
+            - 3000:3000
+        depends_on: 
+            - api
+        volumes:
+            - ./client:/var/www
+            - js_stack_client:/var/www/node_modules
+        command: npm run start
+
+networks:
+    js_stack_net:
+    js_stack_com_net:
+
+volumes:
+    js_stack_db:
+        driver: local
+    js_stack_api:
+    js_stack_client:

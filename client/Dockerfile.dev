@@ -1,0 +1,32 @@
+# Very specific versions
+FROM node:13.8.0-alpine3.11 as react-build-stage
+
+# make sure this directory exists
+RUN mkdir -p /var/www
+
+# change working directory to the app directory
+WORKDIR /var/www
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# copy all files in current directory to working directory
+COPY package.json /var/www/
+
+# install items needed on alpine linux for npm to install modules correctly
+RUN apk --no-cache add g++ gcc libgcc libstdc++ linux-headers make python
+
+# install node-gyp -system specific and needs to be installed before modules
+RUN npm install --silent node-gyp -g
+
+# install package.json modules
+RUN npm install --silent
+
+# copy all currently made items into /var/www
+COPY . /var/www/
+
+# expose this port
+EXPOSE 3000
+
+# run this command on run
+CMD [ "npm", "run", "start" ]

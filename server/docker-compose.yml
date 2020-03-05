@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+    db:
+        container_name: mysql_comp_dev
+        image: mysql:8.0.19
+        # needed for mysql 8+
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        hostname: db
+        networks:
+            node_mysql_network:
+        # 3306 is not available on my machine because it is already running mysql
+        ports:
+            - 3307:3306
+        environment:
+            - MYSQL_DATABASE=ctodo
+            - MYSQL_ROOT_PASSWORD=example
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+        volumes:
+            - ./db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+            -  db_data:/var/lib/mysql/
+    api:
+        container_name: node_comp_dev
+        hostname: api
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        networks:
+            - node_mysql_network
+        environment:
+            PORT: 8080
+            MYSQL_HOST: db
+            MYSQL_USER: root
+            MYSQL_PASSWORD: example
+            MYSQL_DB: ctodo
+            MYSQL_PORT: 3306
+        ports:
+            - target: 8080
+              published: 8080
+              protocol: tcp
+              mode: host
+        volumes:
+            - .:/app
+            - /app/node_modules
+        working_dir: /app
+        stdin_open: true
+        tty: true
+        restart: always
+        depends_on:
+            - db
+        command: npm run dev
+networks:
+    node_mysql_network:
+
+volumes:
+    db_data:
+        driver: local

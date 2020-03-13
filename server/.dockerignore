@@ -5,3 +5,5 @@
 *Dockerfile*
 *docker-compose*
 node_modules
+README.md
+npm-debug.log

@@ -14,7 +14,7 @@ services:
             - MYSQL_DATABASE=ctodo
             - MYSQL_ROOT_PASSWORD=example
         volumes:
-            - ./server/db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+            - ./docker_js_stack_api/db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
             - js-stack-db:/var/lib/mysql/
     api:
         container_name: node-comp-js-stack
@@ -35,7 +35,7 @@ services:
               protocol: tcp
               mode: host
         volumes:
-            - ./server:/app
+            - ./docker_js_stack_api:/app
             - js-stack-api:/app/node_modules
         working_dir: /app
         stdin_open: true
@@ -56,7 +56,7 @@ services:
         depends_on: 
             - api
         volumes:
-            - ./client:/var/www
+            - ./docker_js-stack_client:/var/www
             - js-stack-client:/var/www/node_modules
 
 networks:

@@ -1,0 +1,6 @@
+[submodule "docker_js_stack_client"]
+	path = docker_js_stack_client
+	url = https://github.com/marcusjwhelan/docker_js_stack_client.git
+[submodule "docker_js_stack_api"]
+	path = docker_js_stack_api
+	url = https://github.com/marcusjwhelan/docker_js_stack_api.git

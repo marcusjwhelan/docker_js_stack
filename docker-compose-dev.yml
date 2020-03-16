@@ -14,12 +14,12 @@ services:
             - MYSQL_DATABASE=ctodo
             - MYSQL_ROOT_PASSWORD=example
         volumes:
-            - ./server/db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+            - ./docker_js_stack_api/db-service/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
             - js_stack_db:/var/lib/mysql/
     api:
         container_name: node_comp_dev_js_stack
         build:
-            context: ./server
+            context: ./docker_js_stack_api
             dockerfile: Dockerfile.dev
         networks: 
             - js_stack_net
@@ -37,7 +37,7 @@ services:
               protocol: tcp
               mode: host
         volumes:
-            - ./server:/app
+            - ./docker_js_stack_api:/app
             - js_stack_api:/app/node_modules
         working_dir: /app
         stdin_open: true
@@ -49,7 +49,7 @@ services:
     client:
         container_name: react_comp_dev_js_stack
         build:
-            context: ./client
+            context: .docker_js_stack_client
             dockerfile: Dockerfile.dev
         networks: 
             - js_stack_com_net
@@ -60,7 +60,7 @@ services:
         depends_on: 
             - api
         volumes:
-            - ./client:/var/www
+            - .docker_js_stack_client:/var/www
             - js_stack_client:/var/www/node_modules
         command: npm run start
 

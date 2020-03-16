@@ -1,5 +1,12 @@
 Build both client, server, and database to all work together with docker
 
+## Add client and api submodules
+```bash
+git submodule add https://github.com/marcusjwhelan/docker_js_stack_client.git
+git submodule add https://github.com/marcusjwhelan/docker_js_stack_api.git   
+```
+
+
 ```bash
 docker-compose build --no-cache # no cache optional for debugging issues
 docker-compose up -d

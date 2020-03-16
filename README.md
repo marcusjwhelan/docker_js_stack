@@ -55,3 +55,11 @@ So there is a database **ctodo** with table **customers**.
     4. In "Resources" Select "File Sharing" and enable at least the C: drive
     5. In "Command Line" enable experimental features
     6. in "Kubernetes" enable Kubernetes, but nothing else, and then apply & reset
+
+## Update submodules
+```bash
+git submodule update --recursive --remote
+git add .
+git commit -m ""
+git push
+```

@@ -65,7 +65,7 @@ git push
 ```
 
 
-## Set up Kubernetes to test environment
+# Set up Kubernetes to test environment
 First start server service
 ```bash
 cd /docker_js_stack_api/kubernetes
@@ -82,7 +82,7 @@ Next we need to build the client app
 ```bash
 cd ../..
 cd docker_js_stack_client
-docker image build -f mjwrazor/docker-js-stack-client:latest .
+docker image build -t mjwrazor/docker-js-stack-client:latest .
 ```
 You should see `Successfully built 'tag#'` and compare that to the tag shown when you run
 ```bash

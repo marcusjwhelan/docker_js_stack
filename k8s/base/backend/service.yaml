@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api
+  name: api-service
+spec:
+  ports:
+  - port: 8080 # expose the service on internal port 80
+    protocol: TCP
+    targetPort: 8080 # our nodejs app listens on port 8080
+  selector:
+    app: api # select this application to service
+  type: LoadBalancer
+status:
+  loadBalancer: {}

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    environment: production
+    app: api
+  # pod name
+  name: api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      affinity:
+        # prevent replicas of this pod on a single node
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app # key/value has to match .spec.selector.matchLabels
+                operator: In
+                values:
+                - api
+            topologyKey: "kubernetes.io/hostname"
+        # make sure to colocate the client pod on this node
+        # the client pod has an antiaffinity for itself as well not to have replicas on the same node
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - client
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - image: mjwrazor/docker-js-stack-api:latest
+        name: api-container
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        stdin: true
+        tty: true
+        workingDir: /app
+        ports:
+        - containerPort: 8080
+        args:
+        - npm
+        - run
+        - start
+        envFrom:
+        - configMapRef:
+            name: server-side-configs
+      restartPolicy: Always
+      volumes: null
+      serviceAccountName: ""
+status: {}

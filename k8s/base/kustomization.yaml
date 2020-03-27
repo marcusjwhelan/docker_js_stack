@@ -1,0 +1,10 @@
+resources:
+- config-map.yaml
+- backend/deployment.yaml
+- backend/service.yaml
+- frontend/deployment.yaml
+- frontend/service.yaml
+- storage/statefulset.yaml
+- storage/service.yaml
+- storage/persistent-volume.yaml
+- storage/persistent-volume-claim.yaml

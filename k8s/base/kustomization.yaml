@@ -4,7 +4,7 @@ resources:
 - backend/service.yaml
 - frontend/deployment.yaml
 - frontend/service.yaml
-- storage/statefulset.yaml
+- storage/stateful-set.yaml
 - storage/service.yaml
 - storage/persistent-volume.yaml
 - storage/persistent-volume-claim.yaml

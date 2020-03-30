@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-side-configs
+data:
+  MYSQL_HOST: production-db-service.default

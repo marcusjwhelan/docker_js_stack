@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: client
+  name: client-deployment
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    spec:
+      nodeSelector:
+        workload: node-selector-app
+      affinity:
+        # prevent replicas on a single node
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app # key/value has to match .spec.selector.matchLabels
+                operator: In
+                values:
+                - client
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: client-container
+          image: mjwrazor/docker-js-stack-client:1.0.0
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi

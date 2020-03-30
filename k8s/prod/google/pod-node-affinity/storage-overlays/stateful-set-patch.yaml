@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: db
+  name: db-stateful-set
+spec:
+  serviceName: db-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    spec:
+      nodeSelector:
+        workload: node-selector-db
+      affinity:
+        # prevent replicas of this pod on a single node
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app # key/value has to match .spec.selector.matchLabels
+                operator: In
+                values:
+                - api
+              - key: app
+                operator: In
+                values:
+                - client
+            topologyKey: "kubernetes.io/hostname"

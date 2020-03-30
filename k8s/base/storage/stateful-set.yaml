@@ -6,32 +6,14 @@ metadata:
   name: db-stateful-set
 spec:
   serviceName: "db-service"
-  replicas: 1
   selector:
     matchLabels:
       app: db # has to match .spec.template.metadata.labels
-  updateStrategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
         app: db # has to match .spec.selector.matchLabels
     spec:
-      affinity:
-        # prevent replicas of this pod on a single node
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app # key/value has to match .spec.selector.matchLabels
-                operator: In
-                values:
-                - api
-              - key: app
-                operator: In
-                values:
-                - client
-            topologyKey: "kubernetes.io/hostname"
       terminationGracePeriodSeconds: 15
       containers:
       - image: mysql:8.0.19

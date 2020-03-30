@@ -17,9 +17,11 @@ kubectl delete deploy/client svc/client
 
 
 ## Get api-deployment logs out to file
- kubectl logs -f deployment/api-deployment > api-logs.txt
+```bash
+kubectl logs -f deployment/api-deployment > api-logs.txt
+```
 
 ## Delete all items in this deployment
 ```bash
- kubectl delete pod,svc,statefulset,deploy,pv,pvc --all
+kubectl delete pod,svc,statefulset,deploy,pv,pvc --all
  ```

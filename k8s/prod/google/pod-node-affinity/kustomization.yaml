@@ -4,6 +4,7 @@ patchesStrategicMerge:
 - backend-overlays/deployment-patch.yaml
 - frontend-overlays/deployment-patch.yaml
 - storage-overlays/stateful-set-patch.yaml
-- storage-overlays/persistent-volume-patch.yaml
+- storage-overlays/persistent-volume-claim-patch.yaml
+- storage-overlays/persistent-storage-patch.yaml
 - config-map-patch.yaml
 namePrefix: production-

@@ -1,5 +1,5 @@
 # Releasing project to google - only using pod/node affinity
-No Kustomize tricks, no ansible, Terraform, no Kubeadm.
+ no ansible, Terraform, no Kubeadm.
 
 # Creating Same k8s cluster on Google Cloud
 

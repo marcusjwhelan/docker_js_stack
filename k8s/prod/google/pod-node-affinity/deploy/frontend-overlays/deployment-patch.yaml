@@ -28,7 +28,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
       containers:
         - name: client-container
-          image: mjwrazor/docker-js-stack-client:1.0.0
+          image: mjwrazor/docker-js-stack-client:1.0.1
           resources:
             requests:
               cpu: 100m

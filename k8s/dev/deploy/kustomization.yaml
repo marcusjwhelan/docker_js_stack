@@ -1,7 +1,8 @@
 bases:
-- ../base/
+- ../../base/deploy/
 patchesStrategicMerge:
 - storage-overlays/persistent-volume-claim-patch.yaml
-- storage-overlays/persistent-volume-patch.yaml
-- config-map-patch.yaml
+- api-config-map-patch.yaml
+resources:
+- persistent-volume.yaml
 namePrefix: development-

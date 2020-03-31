@@ -180,63 +180,7 @@ kubectl delete pvc/mysql-pv-claim
 kubectl delete pv/mysql-pv-volume
 ```
 
-# Creating Same k8s cluster on Google Cloud
 
-If you are just starting out: go to the Google Cloud Platform and create a new project. Once You have done that select that project and go the the dashboard for that project. 
-
-The **project-id** will be listed in the `Project Info` on the Dashboard along with the **project-name** and the **project-number**.
-
-On the top left open th `Navigation Menu` and select `Kubernetes Engine` and enable it. Make sure billing is enabled as well. Do not create a cluster or anything yet.
-
-We will be working with the gcloud command locally in powershell. If any errors occur usually switching to cmd fixes it. Make sure to have downloaded the gcloud CLI.
-
-Open Powershell as admin
-Then Login and config set account
-```bash
-gcloud auth login --no-launch-browser
-```
-Take that link and open it in your browser of choice. Preferrably not Internet explorer or Edge since it doesnt seem to work on those browsers.
-
-Once you login you will get a code, copy and past that code into the CLI request for `Enter verification code: `. 
-
-Then update gcloud
-```bash
-gcloud components update
-```
-
-Set the project **docker-js-stack**
-```bash
-glcoud config set project docker-js-stack
-```
-Now set your compute zone
-Name | types | Locations
---- | --- | ---
-us-central1 | a, b, c, f | Council Bluffs, Iowa, USA
-us-east1 | b, c, d | Moncks Corner, South Carolina, USA
-us-east4 | a, b, c | Ashburn, Northern Virginia, USA
-us-west1 | a, b, c | The Dalles, Oregon, USA
-us-west2 | a, b, c | Los Angeles, California, USA
-us-west3 | a, b, c | Salt Lake City, Utah, USA
-```bash
-gcloud config set compute/zone us-west1-b
-```
-If you create a zone with just the **us-west1** when you create a cluster a node will be made in each sub zone.
-
-Take a look at your setup locally
-```bash
-gcloud config list
-```
-
-Now lets create the cluster **docker-js-stack-gke** with 1 node
-```bash
-gcloud container clusters create docker-js-stack-gke --num-nodes=1
-```
-Next get credentials to operate on cluster which configures kubectl to use the cluster you created.
-```bash
-gcloud container clusters get-credentials docker-js-stack-gke
-> Fetching cluster endpoint and auth data.
-> kubeconfig entry generated for docker-js-stack-gke.
-```
 
 # Using Kustomize
 

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client-side-configs
+data:
+  config.js: |
+    window.API_URL='http://35.247.116.75:8080'
+    window.NODE_ENV='production'

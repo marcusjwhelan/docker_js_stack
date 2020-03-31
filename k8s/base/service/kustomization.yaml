@@ -1,0 +1,4 @@
+resources:
+- backend/service.yaml
+- frontend/service.yaml
+- storage/service.yaml

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: client
+  name: client-deployment
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      restartPolicy: Always
+      serviceAccountName: ""
+      containers:
+      - image: mjwrazor/docker-js-stack-client:latest
+        name: client-container
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        ports:
+        - containerPort: 80
+        # needed bc of env variables
+        # https://dev.to/ama/react-app-deployment-on-kubernetes-with-kubectl-kustomize-and-helm-in-a-multi-environment-setup-5b1o
+        volumeMounts:
+          - name: env-var-volume-mount
+            mountPath: /usr/share/nginx/html/config.js
+            subPath: config.js
+            readOnly: true
+      volumes:
+        - name: env-var-volume-mount
+          configMap:
+            name: client-side-configs
+status: {}

@@ -65,7 +65,10 @@ git push
 ```
 
 
-# Test K8s deployment locally
+# Originally the kubernetes files were on each sub repo
+Here you can see how I originally had it setup and how I deployed it. 
+Now using Kustomize(built into Kubectl) to launch my applicaiton for development and production. See /k8s READMEs.
+
 First start server service
 ```bash
 cd /docker_js_stack_api/kubernetes
@@ -188,6 +191,7 @@ Moved all files into k8s and will be able to run full configurations with one co
 
 launch base application - dont forget to do the init.sql from the api repo inside of the stateful set
 ```bash
-kubectl apply -k /k8s/base
+kubectl apply -k /k8s/dev/service # launch the services first to get IP addresses - more useful in production really
+kubectl apply -k /k8s/dev/deploy # launch the deployment after
 ```
 With kustomize you can deploy different versions of the application using the base. 

@@ -22,6 +22,7 @@ kubectl logs -f deployment/api-deployment > api-logs.txt
 ```
 
 ## Delete all items in this deployment
+Once deployed, dont delete svc(services)
 ```bash
 kubectl delete pod,svc,statefulset,deploy,pv,pvc --all
  ```

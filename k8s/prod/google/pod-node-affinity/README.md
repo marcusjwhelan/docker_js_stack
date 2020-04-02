@@ -216,3 +216,9 @@ kubectl exec -ti <your-stateful-set-pod-name> -- mysql -uroot -pexample
 ```
 
 Now go to that client IP url and check out the console. You should see output from the server.
+
+# Deleting made cluster
+```bash
+gcloud container clusters list
+gcloud container clusters delete <cluster-name>
+```

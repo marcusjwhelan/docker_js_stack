@@ -167,7 +167,7 @@ Make sure to create and populate the db with instructions in docker_js_stack_api
 ```bash
 kubectl get pods
 # get the db-deployment pod
-kubectl exec -ti db-deployment-f8457f947-h92tl -- mysql -uroot -pexample
+kubectl exec -ti development-db-stateful-set-0 -- mysql -uroot -pexample
 ```
 After you are in the mysql cli you will need to copy and paste the init code from `/docker-js-stack-api/db-service/init.sql` and execute it. This way the user for the back end will be created and a small amount of data will be pre populated for testing. 
 

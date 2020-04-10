@@ -1,3 +1,5 @@
 /docker_js_stack_api
 /docker_js_stack_client
 /.idea
+/creds/google/terraform.json
+*.terraform

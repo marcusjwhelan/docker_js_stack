@@ -1,3 +1,6 @@
+data "google_container_cluster" "cluster_config" {
+  name = "${google_container_cluster.stack_cluster.name}"
+}
 
 # Allows other resources to refer to things like the authorization token for
 # the configured Google account
@@ -6,13 +9,13 @@ data "google_client_config" "default" {}
 # The GKE cluster. The node pool is managed as a separate resource below.
 resource "google_container_cluster" "stack_cluster" {
   depends_on = [
-    "google_service_account.terraform",
+    google_service_account.terraform1
   ]
 
-  provider = "google-beta"
+  provider = google-beta
 
   name     = var.cluster_name
-  location = var.cluster_zone
+  location = var.zone
   project  = var.project
 
   # TPU requires a separate ip range (https://cloud.google.com/tpu/docs/kubernetes-engine-setup)
@@ -49,7 +52,7 @@ resource "google_container_cluster" "stack_cluster" {
     }
 
     network_policy_config {
-      disabled = "${var.network_policy_enabled == false ? true : false}"
+      disabled = var.network_policy_enabled == false ? true : false
     }
 
   }
@@ -72,7 +75,7 @@ resource "google_container_cluster" "stack_cluster" {
 
   network_policy {
     enabled  = var.network_policy_enabled
-    provider = "${var.network_policy_enabled == true ? "CALICO" : null}"
+    provider = var.network_policy_enabled == true ? "CALICO" : null
   }
 
   logging_service    = "logging.googleapis.com/kubernetes"
@@ -93,10 +96,9 @@ resource "google_container_cluster" "stack_cluster" {
 
 resource "google_container_node_pool" "main_pool" {
   # max_pods_per_node is in google-beta as of 2019-07-26
-  provider = "google-beta"
-
+  provider = google-beta
   cluster  = google_container_cluster.stack_cluster.name
-  location = var.cluster_zone
+  location = var.zone
   project  = var.project
 
   name = var.main_node_pool_name
@@ -119,8 +121,10 @@ resource "google_container_node_pool" "main_pool" {
   node_config {
     machine_type = var.main_node_pool_machine_type
     min_cpu_platform = "Intel Broadwell"
-    disk_size_gb = 10
-    service_account = google_service_account.terraform.email
+    disk_type = var.node_pool_disk_type
+    local_ssd_count = var.node_pool_local_ssd_count
+    disk_size_gb = var.node_pool_disk_size_gb
+    service_account = google_service_account.terraform1.email
     # the k8s labels for these nodes in this node pool
     labels = {
       "workload" = "node-selector-app"
@@ -143,10 +147,9 @@ resource "google_container_node_pool" "main_pool" {
 
 resource "google_container_node_pool" "sql_pool" {
   # max_pods_per_node is in google-beta as of 2019-07-26
-  provider = "google-beta"
-
+  provider = google-beta
   cluster  = google_container_cluster.stack_cluster.name
-  location = var.cluster_zone
+  location = var.zone
   project  = var.project
 
   name = var.sql_node_pool_name
@@ -168,10 +171,11 @@ resource "google_container_node_pool" "sql_pool" {
 
   node_config {
     machine_type = var.sql_node_pool_machine_type
-
     min_cpu_platform = "Intel Broadwell"
-
-    service_account = google_service_account.terraform.email
+    disk_type = var.node_pool_disk_type
+    local_ssd_count = var.node_pool_local_ssd_count
+    disk_size_gb = var.node_pool_disk_size_gb
+    service_account = google_service_account.terraform1.email
     labels = {
       "workload" = "node-selector-db"
     }
@@ -197,9 +201,9 @@ resource "google_container_node_pool" "sql_pool" {
 # the disk for the persisten volume for the sql node
 resource "google_compute_disk" "sql_persistent_volume" {
   name = var.disk_name # disk-1
-  zone = var.cluster_zone # us-west1-b
+  zone = var.zone # us-west1-b
   project = var.project # docker-js-stack
   type = var.disk_type # pd-ssd
   size = var.disk_size # 10
-  physical_block_size_bytes = 4096
+  physical_block_size_bytes = var.disk_block_size_bytes# 4096
 }

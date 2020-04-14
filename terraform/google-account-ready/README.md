@@ -94,3 +94,15 @@ Now that we have that simple setup run the init to get your `.terraform` directo
 terraform init # optional --reconfigure if errors
 ```
 
+```bash
+terraform plan --out planfile
+```
+```bash
+terraform apply planfile
+```
+```bash
+gcloud config set compute/zone us-west1-b
+```
+```bash
+gcloud container clusters get-credentials cluster-1
+```

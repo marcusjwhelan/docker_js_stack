@@ -16,7 +16,6 @@ provider "google-beta" {
 }
 
 
-
 # bellow is what was shown to give access to billing and create
 # individual projects per user
 resource "random_id" "user_project" {

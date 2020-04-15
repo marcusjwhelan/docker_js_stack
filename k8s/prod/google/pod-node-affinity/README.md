@@ -56,7 +56,7 @@ gcloud container clusters create docker-js-stack-gke --num-nodes=1
 ```
 Next get credentials to operate on cluster which configures kubectl to use the cluster you created.
 
-The one I release below is cluster-1
+The one I release below is cluster-1 - generates kubeconfig for cluster
 ```bash
 gcloud container clusters get-credentials docker-js-stack-gke
 > Fetching cluster endpoint and auth data.

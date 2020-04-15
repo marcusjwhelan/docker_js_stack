@@ -1,5 +1,5 @@
 data "google_container_cluster" "cluster_config" {
-  name = "${google_container_cluster.stack_cluster.name}"
+  name = google_container_cluster.stack_cluster.name
 }
 
 # Allows other resources to refer to things like the authorization token for
@@ -31,7 +31,7 @@ resource "google_container_cluster" "stack_cluster" {
   # recommends managing the node pool as a separate resource, which we do
   # below.
   remove_default_node_pool = true
-  initial_node_count       = "1"
+  initial_node_count       = 1
 
   resource_labels = {
     "application" = "js-stack"
@@ -47,9 +47,9 @@ resource "google_container_cluster" "stack_cluster" {
       disabled = false
     }
 
-    kubernetes_dashboard {
-      disabled = true
-    }
+    # kubernetes_dashboard {
+    #   disabled = true
+    # }
 
     network_policy_config {
       disabled = var.network_policy_enabled == false ? true : false
@@ -116,7 +116,7 @@ resource "google_container_node_pool" "main_pool" {
     max_node_count = var.main_node_pool_max_nodes
   }
 
-  max_pods_per_node = var.max_pods_per_node
+  #max_pods_per_node = var.max_pods_per_node
 
   node_config {
     machine_type = var.main_node_pool_machine_type
@@ -167,7 +167,7 @@ resource "google_container_node_pool" "sql_pool" {
     max_node_count = var.sql_node_pool_max_nodes
   }
 
-  max_pods_per_node = var.max_pods_per_node
+  #max_pods_per_node = var.max_pods_per_node
 
   node_config {
     machine_type = var.sql_node_pool_machine_type

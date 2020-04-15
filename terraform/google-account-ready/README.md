@@ -89,20 +89,35 @@ https://blog.gruntwork.io/how-to-manage-terraform-state-28f5697e68fa
 Also You cannot use any variables in the `terraform` object block.
 
 ## Continue terraform
+This step I forgot to do earlier but are needed to set up kubernetes
+```bash
+gcloud config set compute/zone us-west1-b
+```
 Now that we have that simple setup run the init to get your `.terraform` directory built and state captured in the bucket
 ```bash
 terraform init # optional --reconfigure if errors
 ```
+Since I was having issues with deployment I turned on debug mode
+```bash
+$env:TF_LOG="DEBUG"
+$env:TF_LOG_PATH="terraform_debug.txt"
+```
 
+Create the Plan file
 ```bash
 terraform plan --out planfile
 ```
+Apply the plan file to be executed
 ```bash
 terraform apply planfile
 ```
-```bash
-gcloud config set compute/zone us-west1-b
-```
+Need to initialize the kubeconfig file with this command. I did notice after the cluster was created it outputed a couple of kubernetes items I think might be used to configure kubeconfig instead of having to run the command below but will have to look into how that is done.
+* kube_access_token
+* kube_ca_cert
+* kube_endpoint
 ```bash
 gcloud container clusters get-credentials cluster-1
 ```
+
+Then follow the kubernetes steps for production release with kustomize and it works. 
+This is still pretty manual but the concept is now proven. Took some 15 minutes to finish provisioning though.

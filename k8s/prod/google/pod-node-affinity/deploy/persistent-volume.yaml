@@ -3,7 +3,7 @@ kind: PersistentVolume
 metadata:
   name: mysql-pv-volume
   labels:
-    failure-domain.beta.kubernetes.io/zone: us-west1-a
+    failure-domain.beta.kubernetes.io/zone: us-west1-b
 spec:
   capacity: 
     storage: 10Gi

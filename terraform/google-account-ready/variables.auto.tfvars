@@ -15,7 +15,7 @@ env_label = "prod"
 network_policy_enabled = true
 issue_client_certificate = false
 network = "default"
-subnetwork = ""
+subnetwork = "default"
 min_master_version = ""
 timeout = "30m"
 

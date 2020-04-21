@@ -111,6 +111,10 @@ Apply the plan file to be executed
 ```bash
 terraform apply planfile
 ```
+
+The Step below is no longer needed after adding the `kubernetes` provider step which
+captures teh host/token/cluster_cert to initialize kubernetes after the cluster is created.
+
 Need to initialize the kubeconfig file with this command. I did notice after the cluster was created it outputed a couple of kubernetes items I think might be used to configure kubeconfig instead of having to run the command below but will have to look into how that is done.
 * kube_access_token
 * kube_ca_cert

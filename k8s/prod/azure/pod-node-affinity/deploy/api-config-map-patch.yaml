@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-side-configs
+data:
+  CLIENT_URL: http://104.196.244.191
+  MYSQL_HOST: production-db-service.default

@@ -350,3 +350,9 @@ kubectl get pods
 # get the db-deployment pod
 kubectl exec -ti <your-stateful-set-pod-name> -- mysql -uroot -pexample
 ```
+
+# Deleting made cluster
+> NOTE deleting a cluster this way will delete dynamically created disks, because the disk is attached to a pod. If you want persistent files without pod attachment create a azure files instead.
+```bash
+ az aks delete --name cluster-1 --resource-group mwK8ResourceGroup --yes
+ ```

@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: server-side-configs
 data:
-  CLIENT_URL: http://104.196.244.191
+  CLIENT_URL: http://52.177.36.193
   MYSQL_HOST: production-db-service.default

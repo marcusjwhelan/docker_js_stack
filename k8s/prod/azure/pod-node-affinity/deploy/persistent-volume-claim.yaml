@@ -5,6 +5,7 @@ metadata:
 spec:
   accessModes:
   - ReadWriteOnce
+  storageClassName: managed-premium
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi

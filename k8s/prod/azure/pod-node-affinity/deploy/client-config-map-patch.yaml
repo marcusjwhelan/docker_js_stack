@@ -4,5 +4,5 @@ metadata:
   name: client-side-configs
 data:
   config.js: |
-    window.API_URL='http://52.177.36.132:8080'
+    window.API_URL='http://40.70.230.75:8080'
     window.NODE_ENV='production'

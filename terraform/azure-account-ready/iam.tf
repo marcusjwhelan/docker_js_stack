@@ -15,48 +15,52 @@ resource "azurerm_resource_group" "test_rs" {
 
 # Service principal for cluster
 # first you need an azure application
-# resource "azuread_application" "aks_sp" {
-#   name                        = var.clustername
-#   # homepage                    = "https://${var.clustername}"
-#   # identifier_uris             = ["https://${var.clustername}"]
-#   # reply_urls                  = ["https://${var.clustername}"]
-#   available_to_other_tenants  = false # default
-#   # public_client               = false # default
-#   # oauth2_allow_implicit_flow  = false # default
-# }
+
+resource "azuread_application" "aks_sp" {
+  name                        = var.clustername
+  # homepage                    = "https://${var.clustername}"
+  # identifier_uris             = ["https://${var.clustername}"]
+  # reply_urls                  = ["https://${var.clustername}"]
+  available_to_other_tenants  = false # default
+  # public_client               = false # default
+  # oauth2_allow_implicit_flow  = false # default
+}
 
 # service principal
-# resource "azuread_service_principal" "sp" {
-#   application_id                = azuread_application.aks_sp.application_id
-#   app_role_assignment_required  = false # default
-# }
+
+resource "azuread_service_principal" "sp" {
+  application_id                = azuread_application.aks_sp.application_id
+  app_role_assignment_required  = false # default
+}
 
 # create random password
-# resource "random_password" "aks_rnd_sp_pwd" {
-#   length  = 32
-#   special = true
-# }
 
-# resource "azuread_service_principal_password" "aks_sp_pwd" {
-#   service_principal_id  = azuread_service_principal.sp.id
-#   value                 = random_password.aks_rnd_sp_pwd.result
-#   end_date              = "2099-01-01T01:01:01Z"
-#   # end_date_relative  = "17520h" # expire in 2 years
-# }
+resource "random_password" "aks_rnd_sp_pwd" {
+  length  = 32
+  special = true
+}
 
-# resource "azurerm_role_assignment" "aks_sp_role_assignment" {
-#   scope                = data.azurerm_subscription.current.id
-#   role_definition_name = data.azurerm_role_definition.builtin.name
-#   principal_id         = azuread_service_principal.sp.id
+resource "azuread_service_principal_password" "aks_sp_pwd" {
+  service_principal_id  = azuread_service_principal.sp.id
+  value                 = random_password.aks_rnd_sp_pwd.result
+  end_date              = "2099-01-01T01:01:01Z"
+  # end_date_relative  = "17520h" # expire in 2 years
+}
 
-#   depends_on = [
-#     azuread_service_principal_password.aks_sp_pwd
-#   ]
-# }
+resource "azurerm_role_assignment" "aks_sp_role_assignment" {
+  scope                = data.azurerm_subscription.current.id
+  role_definition_name = data.azurerm_role_definition.builtin.name
+  principal_id         = azuread_service_principal.sp.id
+
+  depends_on = [
+    azuread_service_principal_password.aks_sp_pwd
+  ]
+}
 
 
 # ------------ Start
-# Not needed but good to know this is possible, was trying to create the 
+# Not needed 
+# but good to know this is possible, was trying to create the 
 # storage account and container for the backend terraform state but forgot
 # that the terraform backend cannot use any variables and needs to be hard coded.
 # Meaning you need to create the storage account and container manually before

@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: db
+  name: db-stateful-set
+spec:
+  serviceName: db-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    spec:
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim

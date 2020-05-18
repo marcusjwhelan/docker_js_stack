@@ -196,3 +196,42 @@ Make sure to go into the azure gui and find the blob name
  ```bash
  terraform apply planfile
  ```
+
+ After the cluster is created then get the kubernetes credentials
+```bash
+az aks get-credentials --resource-group mwK8ResourceGroup --name cluster-1
+```
+
+## Start up kubernetes
+
+Launch the services first
+```bash
+kubectl apply -k .\k8s\prod\azure\pod-node-affinity\service\
+```
+
+Request the services to get the exposed IP Address
+```bash
+kubectl get svc
+```
+
+There you will be given the external IPs and ports. Take the client IP and change the the **CLIENT_URL** in k8s/prod/google/pod-node-affinity/api-config-map-pathc.yaml to the IP for the client.
+
+Do the same for the **API_URL** for the client-config-map.yaml, and continue below with launching the rest of the application.
+
+Then launch the applications and storage
+```bash
+kubectl apply -k .\k8s\prod\azure\pod-node-affinity\deploy\
+```
+
+Make sure to create and populate the db with instructions in docker_js_stack_api in the README
+```bash
+kubectl get pods
+# get the db-deployment pod
+kubectl exec -ti <your-stateful-set-pod-name> -- mysql -uroot -pexample
+```
+
+# Deleting made cluster
+> NOTE deleting a cluster this way will delete dynamically created disks, because the disk is attached to a pod. If you want persistent files without pod attachment create a azure files instead.
+```bash
+ az aks delete --name cluster-1 --resource-group mwK8ResourceGroup --yes
+ ```

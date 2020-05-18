@@ -49,8 +49,8 @@ resource "azurerm_kubernetes_cluster" "cluster_1" {
   }
 
   service_principal {
-    client_id     = "{}" # azuread_application.aks_sp.application_id
-    client_secret = "{}" # random_password.aks_rnd_sp_pwd.result
+    client_id     = azuread_application.aks_sp.application_id # "88a175a9-5171-4aca-902d-de075570b859" # 
+    client_secret = random_password.aks_rnd_sp_pwd.result # "610a430e-8bcc-41fe-ba6e-888034dc801d" # 
   }
 
   network_profile {
@@ -65,10 +65,10 @@ resource "azurerm_kubernetes_cluster" "cluster_1" {
     }
   }
 
-  # depends_on = [
-  #   azurerm_role_assignment.aks_sp_role_assignment,
-  #   azuread_service_principal_password.aks_sp_pwd
-  # ]
+  depends_on = [
+    azurerm_role_assignment.aks_sp_role_assignment,
+    azuread_service_principal_password.aks_sp_pwd
+  ]
 }
 
 
